@@ -26,6 +26,10 @@ export default function CasaScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.titulo}>Hora do Cinema 🎬</Text>
+      <TouchableOpacity style={styles.btnVoltar} onPress={() => router.push('/')}>
+      <Text style={styles.txtVoltar}>Voltar para o início</Text>
+      </TouchableOpacity>
+
       <FlatList
         data={filmes}
         keyExtractor={(item) => item.id}
@@ -77,4 +81,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  btnVoltar: {
+  marginLeft: 20,
+  marginBottom: 6,
+  backgroundColor: '#ddd',
+  paddingVertical: 5,
+  paddingHorizontal: 10,
+  borderRadius: 20,
+  alignSelf: 'flex-start',
+},
+txtVoltar: {
+  color: '#665544',
+  fontWeight: 'bold',
+},
+
 });
