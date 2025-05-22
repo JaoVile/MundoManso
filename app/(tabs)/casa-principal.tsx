@@ -1,11 +1,23 @@
-import React from 'react';
-import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useRef, useState } from 'react';
+import {
+  View,
+  Text,
+  ImageBackground,
+  Animated,
+  FlatList,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
 import { useRouter } from 'expo-router';
+
+const { width } = Dimensions.get('window');
 
 const filmes = [
   {
     id: '1',
-    titulo: 'O PEQUENO URSOo',
+    titulo: 'O PEQUENO URSO',
     imagem: require('../../assets/videos/O_PEQUENO_URSO.png'),
   },
   {
@@ -21,60 +33,130 @@ const filmes = [
 ];
 
 export default function CasaScreen() {
+  const scrollX = useRef(new Animated.Value(0)).current;
+  const flatListRef = useRef<FlatList>(null);
+  const [indexAtual, setIndexAtual] = useState(0);
   const router = useRouter();
 
+  const irParaProximo = () => {
+    if (indexAtual < filmes.length - 1) {
+      flatListRef.current?.scrollToIndex({ index: indexAtual + 1, animated: true });
+      setIndexAtual(indexAtual + 1);
+    }
+  };
+
+  const irParaAnterior = () => {
+    if (indexAtual > 0) {
+      flatListRef.current?.scrollToIndex({ index: indexAtual - 1, animated: true });
+      setIndexAtual(indexAtual - 1);
+    }
+  };
+
   return (
-    <View style={styles.container}>
+    <ImageBackground
+      source={require('../../assets/images/fundo_filmes.jpg')}
+      style={styles.background}
+      resizeMode="cover"
+    >
       <Text style={styles.titulo}>Hora do Cinema 🎬</Text>
-      <FlatList
+
+      <Animated.FlatList
+        ref={flatListRef}
         data={filmes}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
         keyExtractor={(item) => item.id}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+          { useNativeDriver: true }
+        )}
+        onMomentumScrollEnd={(event) => {
+          const novoIndex = Math.round(event.nativeEvent.contentOffset.x / width);
+          setIndexAtual(novoIndex);
+        }}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.card}
-            onPress={() => router.push('./detalhe')}
+            onPress={() => router.push('/detalhe')}
           >
             <Image source={item.imagem} style={styles.imagem} />
             <Text style={styles.nome}>{item.titulo}</Text>
           </TouchableOpacity>
         )}
-        numColumns={2}
-        contentContainerStyle={styles.lista}
       />
-    </View>
+
+      <View style={styles.botoes}>
+        <TouchableOpacity onPress={irParaAnterior} style={styles.botaoNavegar}>
+          <Text style={styles.textoBotao}>{'◀'}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={irParaProximo} style={styles.botaoNavegar}>
+          <Text style={styles.textoBotao}>{'▶'}</Text>
+        </TouchableOpacity>
+      </View>
+
+      <TouchableOpacity
+        onPress={() => router.push('/')}
+        style={styles.botaoVoltar}
+      >
+        <Text style={styles.textoVoltar}>Voltar para Home</Text>
+      </TouchableOpacity>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', paddingTop: 50 },
+  background: { flex: 1, paddingTop: 50 },
   titulo: {
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
+    color: '#fff',
     marginBottom: 20,
   },
-  lista: {
-    paddingHorizontal: 10,
-    gap: 10,
-    justifyContent: 'center',
-  },
   card: {
-    flex: 1,
-    margin: 5,
+    width,
     alignItems: 'center',
-    backgroundColor: '#f2f2f2',
-    borderRadius: 12,
-    padding: 10,
+    padding: 20,
   },
   imagem: {
-    width: 120,
-    height: 120,
-    borderRadius: 8,
-    marginBottom: 8,
+    width: width * 0.7,
+    height: width * 0.7,
+    borderRadius: 20,
+    marginBottom: 10,
   },
   nome: {
-    fontSize: 14,
+    fontSize: 18,
     fontWeight: 'bold',
-    textAlign: 'center',
+    color: '#fff',
+  },
+  botoes: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 50,
+    marginTop: 10,
+  },
+  botaoNavegar: {
+    backgroundColor: '#fff',
+    padding: 10,
+    borderRadius: 50,
+    elevation: 4,
+  },
+  textoBotao: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  botaoVoltar: {
+    marginTop: 30,
+    alignSelf: 'center',
+    backgroundColor: '#fff',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 20,
+    elevation: 4,
+  },
+  textoVoltar: {
+    fontSize: 16,
+    color: '#333',
   },
 });
