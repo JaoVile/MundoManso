@@ -12,22 +12,25 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 
+
 const { width } = Dimensions.get('window');
 
 const filmes = [
-  {
+   {
     id: '1',
-    titulo: 'O PEQUENO URSO',
-    imagem: require('../../assets/videos/O_PEQUENO_URSO.png'),
-  },
-  {
-    id: '2',
-    titulo: 'O Reino Encantado',
+  
     imagem: require('../../assets/videos/reino.png'),
   },
+
+  {
+    id: '2',
+    
+    imagem: require('../../assets/videos/O_PEQUENO_URSO.png'),
+  },
+ 
   {
     id: '3',
-    titulo: 'Brincando na Floresta',
+    
     imagem: require('../../assets/videos/floresta.png'),
   },
 ];
@@ -58,7 +61,6 @@ export default function CasaScreen() {
       style={styles.background}
       resizeMode="cover"
     >
-      <Text style={styles.titulo}>Hora do Cinema 🎬</Text>
 
       <Animated.FlatList
         ref={flatListRef}
@@ -106,57 +108,51 @@ export default function CasaScreen() {
 }
 
 const styles = StyleSheet.create({
-  background: { flex: 1, paddingTop: 50 },
-  titulo: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#fff',
-    marginBottom: 20,
-  },
+  background: { flex: 1, paddingTop: 90 },
   card: {
     width,
     alignItems: 'center',
-    padding: 20,
+    padding: 1,
   },
   imagem: {
-    width: width * 0.7,
-    height: width * 0.7,
+    width: width * 0.712,
+    height: width * 1.04,
     borderRadius: 20,
-    marginBottom: 10,
+    marginBottom:10,
   },
   nome: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#665544',
   },
   botoes: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: 50,
-    marginTop: 10,
+    marginHorizontal: 95,
+    marginTop: 20,
   },
   botaoNavegar: {
     backgroundColor: '#fff',
-    padding: 10,
-    borderRadius: 50,
-    elevation: 4,
+    padding: 25,
+    borderRadius: 25,
+    elevation: 5,
   },
   textoBotao: {
     fontSize: 20,
     fontWeight: 'bold',
   },
   botaoVoltar: {
-    marginTop: 30,
+    marginTop: 70,
+    marginBottom: 20,
     alignSelf: 'center',
     backgroundColor: '#fff',
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     paddingVertical: 10,
-    borderRadius: 20,
-    elevation: 4,
+    borderRadius: 15,
+    elevation: 5,
   },
   textoVoltar: {
-    fontSize: 16,
-    color: '#333',
+    fontSize: 15,
+    color: '#665544',
   },
 });
