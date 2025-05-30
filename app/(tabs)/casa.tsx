@@ -1,26 +1,32 @@
-import { FlatList, Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useRouter } from 'expo-router';
+import {
+  FlatList,
+  Image,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Dimensions,
+} from 'react-native';
+
 
 const filmes = [
   {
     id: '1',
-    titulo: 'O Pequeno Urso',
-    sinopse: 'O Pequeno Urso vive em uma cabana com seus pais, o Papai-Urso e a Mamãe-Urso, e passa seus dias explorando a floresta com seus amigos.',
-    imagemCartaz: require('../../assets/images/Filme_irmão_Urso.png'),
-  },
-  {
-    id: '2',
     titulo: 'A Floresta Sonhadora',
     sinopse: 'Uma aventura mágica em uma floresta encantada onde criaturas mansas vivem em paz.',
     imagemCartaz: require('../../assets/images/Filme_O_Ursinho_Pooh.png'),
   },
-  /*{
-    id: '3',
-    titulo: 'titulo do outro filme ',
-    sinopse: 'Sinopse',
-    imagemCartaz: require('../../assets/images/filme.png'), 
-  },*/
+  {
+    id: '2',
+    titulo: 'O Pequeno Urso',
+    sinopse: 'O Pequeno Urso vive em uma cabana com seus pais, o Papai-Urso e a Mamãe-Urso, e passa seus dias explorando a floresta com seus amigos.',
+    imagemCartaz: require('../../assets/images/Filme_irmão_Urso.png'),
+  },
 ];
+
+const { width } = Dimensions.get('window');
 
 export default function Filme() {
   const router = useRouter();
@@ -31,9 +37,17 @@ export default function Filme() {
       <Text style={styles.sinopseTitulo}>Sinopse:</Text>
       <Text style={styles.sinopse}>{item.sinopse}</Text>
 
-      <TouchableOpacity onPress={() => router.push('/assistir')}>
-        <Image source={require('../../assets/images/Botão_Assistir.png')} style={styles.botao_AS} />
-      </TouchableOpacity>
+      <TouchableOpacity
+      onPress={() => {
+        console.log('ID do botão:', item.id);
+        router.replace(`/assistir?id=${item.id}`);
+      }}>
+      <Image
+        source={require('../../assets/images/Botão_Assistir.png')}
+        style={styles.botao_AS}
+        />
+        </TouchableOpacity>
+
 
       <TouchableOpacity onPress={() => router.push('/')}>
         <Image source={require('../../assets/images/Botão_Home.png')} style={styles.botaoHome} />
@@ -54,7 +68,13 @@ export default function Filme() {
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.flatListContainer}
+        snapToAlignment="center"
+        decelerationRate="fast"
+        getItemLayout={(_, index) => ({
+          length: width,
+          offset: width * index,
+          index,
+        })}
       />
     </ImageBackground>
   );
@@ -66,11 +86,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  flatListContainer: {
-    alignItems: 'center',
-  },
   container: {
-    width: 390, // tamanho da tela
+    width: width,
     padding: 20,
     alignItems: 'center',
     justifyContent: 'center',

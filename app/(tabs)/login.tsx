@@ -1,8 +1,36 @@
-import { View, TextInput, Button, StyleSheet, Image, ImageBackground, Text, TouchableOpacity } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Image, ImageBackground, Text, TouchableOpacity, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState } from 'react';
 
 export default function LoginScreen() {
   const router = useRouter();
+
+  const [nome, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+
+  const fazerLogin = async () => {
+    if (!nome || !senha) {
+      Alert.alert('Erro', 'Preencha todos os campos.');
+      return;
+    }
+
+    const usuarioSalvo = await AsyncStorage.getItem('usuario');
+
+    if (!usuarioSalvo) {
+      Alert.alert('Erro', 'Nenhuma conta encontrada. Cadastre-se primeiro.');
+      return;
+    }
+
+    const dados = JSON.parse(usuarioSalvo);
+
+    if (dados.nome === nome && dados.senha === senha) {
+      await AsyncStorage.setItem('usuarioLogado', 'true');
+      router.replace('/')
+    } else {
+      Alert.alert('Erro', 'E-mail ou senha incorretos.');
+    }
+  };
 
   return (
     <ImageBackground
@@ -17,19 +45,27 @@ export default function LoginScreen() {
           resizeMode="contain"
         />
 
-        <TextInput style={styles.input} placeholder="Seu Nome" placeholderTextColor="#999" />
-        <TextInput style={styles.input} placeholder="Sua Senha" secureTextEntry placeholderTextColor="#999" />
+        <TextInput
+          style={styles.input}
+          placeholder="Seu Nome"
+          keyboardType="email-address"
+          placeholderTextColor="#999"
+          onChangeText={setEmail}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Sua Senha"
+          secureTextEntry
+          placeholderTextColor="#999"
+          onChangeText={setSenha}
+        />
 
         <View style={styles.buttonContainer}>
-          <Button title="Entrar" onPress={() => { /* lógica de login */ }} color="#665544" />
+          <Button title="Entrar" onPress={fazerLogin} color="#665544" />
         </View>
 
         <TouchableOpacity onPress={() => router.push('/cadastro')}>
           <Text style={styles.link}>Criar uma conta</Text>
-          <TouchableOpacity onPress={() => router.push('/')}>
-          <Text style={styles.link}>Voltar para o início</Text>
-          </TouchableOpacity>
-
         </TouchableOpacity>
       </View>
     </ImageBackground>

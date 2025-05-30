@@ -1,8 +1,32 @@
-import { View, TextInput, Button, StyleSheet, Image, ImageBackground, Text, TouchableOpacity } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Image, ImageBackground, Text, TouchableOpacity, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState } from 'react';
 
 export default function CadastroScreen() {
   const router = useRouter();
+
+  const [nome, setNome] = useState('');
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+
+  const cadastrar = async () => {
+    if (!nome || !email || !senha) {
+      Alert.alert('Erro', 'Preencha todos os campos!');
+      return;
+    }
+
+    const dadosUsuario = { nome, email, senha };
+    await AsyncStorage.setItem('usuario', JSON.stringify(dadosUsuario));
+    await AsyncStorage.setItem('usuarioLogado', 'true');
+
+    Alert.alert('Parabéns!', 'Conta criada com sucesso!', [
+      {
+        text: 'Ok',
+        onPress: () => router.replace('/'),
+      },
+    ]);
+  };
 
   return (
     <ImageBackground
@@ -17,19 +41,33 @@ export default function CadastroScreen() {
           resizeMode="contain"
         />
 
-        <TextInput style={styles.input} placeholder="Seu Nome" placeholderTextColor="#999" />
-        <TextInput style={styles.input} placeholder="Seu E-mail" keyboardType="email-address" placeholderTextColor="#999" />
-        <TextInput style={styles.input} placeholder="Sua Senha" secureTextEntry placeholderTextColor="#999" />
+        <TextInput
+          style={styles.input}
+          placeholder="Seu Nome"
+          placeholderTextColor="#999"
+          onChangeText={setNome}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Seu E-mail"
+          keyboardType="email-address"
+          placeholderTextColor="#999"
+          onChangeText={setEmail}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Sua Senha"
+          secureTextEntry
+          placeholderTextColor="#999"
+          onChangeText={setSenha}
+        />
 
         <View style={styles.buttonContainer}>
-          <Button title="Cadastrar" onPress={() => { /* lógica de cadastro */ }} color="#665544" />
+          <Button title="Cadastrar" onPress={cadastrar} color="#665544" />
         </View>
 
         <TouchableOpacity onPress={() => router.push('/login')}>
           <Text style={styles.link}>Já tenho uma conta</Text>
-          <TouchableOpacity onPress={() => router.push('/')}>
-        <Text style={styles.link}>Voltar para o início</Text>
-        </TouchableOpacity>
         </TouchableOpacity>
       </View>
     </ImageBackground>

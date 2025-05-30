@@ -1,158 +1,108 @@
-import React, { useRef, useState } from 'react';
-import {
-  View,
-  Text,
-  ImageBackground,
-  Animated,
-  FlatList,
-  TouchableOpacity,
-  Image,
-  StyleSheet,
-  Dimensions,
-} from 'react-native';
 import { useRouter } from 'expo-router';
-
-
-const { width } = Dimensions.get('window');
+import { FlatList, Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const filmes = [
    {
     id: '1',
-  
-    imagem: require('../../assets/videos/reino.png'),
+    titulo: 'A Floresta Sonhadora',
+    sinopse: 'Uma aventura mágica em uma floresta encantada onde criaturas mansas vivem em paz.',
+    imagemCartaz: require('../../assets/images/Filme_O_Ursinho_Pooh.png'),
   },
-
+  
   {
     id: '2',
-    
-    imagem: require('../../assets/videos/O_PEQUENO_URSO.png'),
-  },
- 
-  {
-    id: '3',
-    
-    imagem: require('../../assets/videos/floresta.png'),
+    titulo: 'O Pequeno Urso',
+    sinopse: 'O Pequeno Urso vive em uma cabana com seus pais, o Papai-Urso e a Mamãe-Urso, e passa seus dias explorando a floresta com seus amigos.',
+    imagemCartaz: require('../../assets/images/Filme_irmão_Urso.png'),
   },
 ];
 
-export default function CasaScreen() {
-  const scrollX = useRef(new Animated.Value(0)).current;
-  const flatListRef = useRef<FlatList>(null);
-  const [indexAtual, setIndexAtual] = useState(0);
+export default function Filme() {
   const router = useRouter();
 
-  const irParaProximo = () => {
-    if (indexAtual < filmes.length - 1) {
-      flatListRef.current?.scrollToIndex({ index: indexAtual + 1, animated: true });
-      setIndexAtual(indexAtual + 1);
-    }
-  };
+  const renderItem = ({ item }: { item: typeof filmes[0] }) => (
+    <View style={styles.container}>
+      <Image source={item.imagemCartaz} style={styles.cartaz} />
+      <Text style={styles.sinopseTitulo}>Sinopse:</Text>
+      <Text style={styles.sinopse}>{item.sinopse}</Text>
 
-  const irParaAnterior = () => {
-    if (indexAtual > 0) {
-      flatListRef.current?.scrollToIndex({ index: indexAtual - 1, animated: true });
-      setIndexAtual(indexAtual - 1);
-    }
-  };
+      <TouchableOpacity onPress={() => router.push({ pathname: '/assistir', params: { id: item.id } })}>
+      <Image source={require('../../assets/images/Botão_Assistir.png')} style={styles.botao_AS} />
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => router.push('/')}>
+        <Image source={require('../../assets/images/Botão_Home.png')} style={styles.botaoHome} />
+      </TouchableOpacity>
+    </View>
+  );
 
   return (
     <ImageBackground
-      source={require('../../assets/images/fundo_filmes.jpg')}
+      source={require('../../assets/images/Parte_de_tras_Filmes.png')}
       style={styles.background}
       resizeMode="cover"
     >
-
-      <Animated.FlatList
-        ref={flatListRef}
+      <FlatList
         data={filmes}
+        keyExtractor={(item) => item.id}
+        renderItem={renderItem}
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        keyExtractor={(item) => item.id}
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-          { useNativeDriver: true }
-        )}
-        onMomentumScrollEnd={(event) => {
-          const novoIndex = Math.round(event.nativeEvent.contentOffset.x / width);
-          setIndexAtual(novoIndex);
-        }}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.card}
-            onPress={() => router.push('/detalhe')}
-          >
-            <Image source={item.imagem} style={styles.imagem} />
-            <Text style={styles.nome}>{item.titulo}</Text>
-          </TouchableOpacity>
-        )}
+        contentContainerStyle={styles.flatListContainer}
       />
-
-      <View style={styles.botoes}>
-        <TouchableOpacity onPress={irParaAnterior} style={styles.botaoNavegar}>
-          <Text style={styles.textoBotao}>{'◀'}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={irParaProximo} style={styles.botaoNavegar}>
-          <Text style={styles.textoBotao}>{'▶'}</Text>
-        </TouchableOpacity>
-      </View>
-
-      <TouchableOpacity
-        onPress={() => router.push('/')}
-        style={styles.botaoVoltar}
-      >
-        <Text style={styles.textoVoltar}>Voltar para Home</Text>
-      </TouchableOpacity>
     </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  background: { flex: 1, paddingTop: 90 },
-  card: {
-    width,
+  background: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+  flatListContainer: {
     alignItems: 'center',
-    padding: 1,
   },
-  imagem: {
-    width: width * 0.712,
-    height: width * 1.04,
+  container: {
+    width: 390, // tamanho da tela
+    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cartaz: {
+    width: 340,
+    height: 400,
     borderRadius: 20,
-    marginBottom:10,
-  },
-  nome: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#665544',
-  },
-  botoes: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginHorizontal: 95,
     marginTop: 20,
   },
-  botaoNavegar: {
-    backgroundColor: '#fff',
-    padding: 25,
-    borderRadius: 25,
-    elevation: 5,
-  },
-  textoBotao: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  botaoVoltar: {
-    marginTop: 70,
-    marginBottom: 20,
-    alignSelf: 'center',
-    backgroundColor: '#fff',
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-    borderRadius: 15,
-    elevation: 5,
-  },
-  textoVoltar: {
+  sinopseTitulo: {
+    width: 200,
+    height: 21,
+    fontFamily: 'Courier New',
     fontSize: 15,
-    color: '#665544',
+    fontWeight: 'bold',
+    color: '#000',
+    marginTop: 3,
+  },
+  sinopse: {
+    width: 300,
+    height: 80,
+    fontFamily: 'VT323',
+    fontSize: 14,
+    color: '#000',
+    marginVertical: 10,
+    textAlign: 'justify',
+  },
+  botao_AS: {
+    height: 80,
+    marginVertical: 10,
+    resizeMode: 'contain',
+  },
+  botaoHome: {
+    width: 120,
+    height: 50,
+    marginTop: 2,
+    resizeMode: 'contain',
   },
 });
