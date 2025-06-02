@@ -3,8 +3,8 @@ import { StyleSheet, View, Text } from 'react-native';
 import { Video, ResizeMode } from 'expo-av';
 
 const videos: Record<string, any> = {
-  '1': require('../../assets/videos/parte 5.mp4'),
-  '2': require('../../assets/videos/191159-889246512_medium.mp4'),
+  /*'1': require('../../assets/videos/parte 5.mp4'),
+  '2': require('../../assets/videos/191159-889246512_medium.mp4'),*/
 };
 
 
