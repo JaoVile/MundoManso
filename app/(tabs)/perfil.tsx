@@ -34,9 +34,11 @@ export default function PerfilScreen() {
     carregarUsuario();
   }, []);
 
+
+    // para o usario sair
   const logout = async () => {
     await AsyncStorage.removeItem('usuarioLogado');
-    router.replace('/cadastro');
+    router.replace('/login');
   };
 
   if (!usuario) return null;
@@ -47,23 +49,31 @@ export default function PerfilScreen() {
       style={styles.background}
       resizeMode="cover"
     >
-      <View style={styles.container}>
-        <View style={styles.profileBox}>
-          <Text style={styles.title}>Seu Perfil</Text>
-          <Text style={styles.label}>👤 Nome: {usuario.nome}</Text>
-          <Text style={styles.label}>📧 E-mail: {usuario.email}</Text>
-          <Text style={styles.label}>🔐 Senha: {usuario.senha}</Text>
+        <View style={styles.profileCard}>
+  <Text style={styles.title}>🌟 Seu Perfil</Text>
+  <View style={styles.infoRow}>
+    <Text style={styles.label}>👤</Text>
+    <Text style={styles.info}>Nome: {usuario.nome}</Text>
+  </View>
+  <View style={styles.infoRow}>
+    <Text style={styles.label}>📧</Text>
+    <Text style={styles.info}>E-mail: {usuario.email}</Text>
+  </View>
+  <View style={styles.infoRow}>
+    <Text style={styles.label}>🔐</Text>
+    <Text style={styles.info}>Senha: {usuario.senha}</Text>
+  </View>
 
-          <View style={styles.buttonGroup}>
-            <View style={styles.button}>
-              <Button title="← Voltar para Home" color="#665544" onPress={() => router.push('/')} />
-            </View>
-            <View style={styles.button}>
-              <Button title="⛔ Sair" color="#000" onPress={logout} />
-            </View>
-          </View>
-        </View>
-      </View>
+  <View style={styles.buttonGroup}>
+    <View style={styles.button}>
+      <Button title="← Voltar para Home" color="#4b3d34" onPress={() => router.push('/')} />
+    </View>
+    <View style={styles.button}>
+      <Button title="⛔ Sair" color="#993333" onPress={logout} />
+    </View>
+  </View>
+</View>
+
     </ImageBackground>
   );
 }
@@ -77,27 +87,38 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
   },
-  profileBox: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // fundo transparente
-    borderRadius: 20,
-    padding: 20,
-    alignItems: 'flex-start',
+  profileCard: {
+    backgroundColor: 'rgba(255, 255, 240, 0.9)',
+    borderRadius: 25,
+    padding: 25,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 8,
+    elevation: 5,
   },
   title: {
-    fontSize: 28,
-    color: '#fff',
+    fontSize: 26,
+    color: '#4b3d34',
     fontWeight: 'bold',
-    marginBottom: 20,
-    alignSelf: 'center',
+    textAlign: 'center',
+    marginBottom: 25,
+  },
+  infoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
   },
   label: {
+    fontSize: 20,
+    marginRight: 10,
+  },
+  info: {
     fontSize: 18,
-    color: '#fff',
-    marginBottom: 10,
+    color: '#333',
   },
   buttonGroup: {
     marginTop: 30,
-    width: '100%',
   },
   button: {
     marginBottom: 15,
