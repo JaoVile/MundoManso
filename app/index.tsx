@@ -131,8 +131,8 @@ const styles = StyleSheet.create({
 
   // tamanhos dos botãoes
   icon: {
-    width: '140%',
-    height: '140%',
+    width: '195%',
+    height: '195%',
   },
   // login(isso deu trabalho não meche )
   btnLogin: {
