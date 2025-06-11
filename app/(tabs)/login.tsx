@@ -2,46 +2,44 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Image, ImageBackground, Text, TouchableOpacity, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import api from '../api/api'; // ajuste caminho
-import axios from 'axios';    // necessário apenas se usar axios.isAxiosError
+import api from '../api/api'; 
+import axios from 'axios';    
 
 export default function LoginScreen() {
   const router = useRouter();
   const [nome, setNome] = useState('');
   const [senha, setSenha] = useState('');
 
-  const fazerLogin = async () => {
-    if (!nome || !senha) {
-      Alert.alert('Erro', 'Preencha todos os campos.');
-      return;
-    }
-    try {
-      const response = await api.post('/login', { nome, senha });
-      const data = response.data;
-      if (data.sucesso) {
-        if (data.token) {
-          await AsyncStorage.setItem('token', data.token);
-        }
-        if (data.usuario) {
-          await AsyncStorage.setItem('usuario', JSON.stringify(data.usuario));
-        }
-        await AsyncStorage.setItem('usuarioLogado', 'true');
-        router.replace('/');
-      } else {
-        Alert.alert('Erro', data.mensagem || 'Credenciais inválidas.');
+    const fazerLogin = async () => {
+  if (!nome || !senha) {
+    Alert.alert('Erro', 'Preencha todos os campos.');
+    return;
+  }
+  try {
+    const response = await api.post('/usuarios/login', { nome, senha });
+    const data = response.data;
+    if (data.sucesso) {
+    
+      if (data.usuario) {
+        await AsyncStorage.setItem('usuario', JSON.stringify(data.usuario));
       }
-    } catch (error: any) {
-      // Opção A: catch (error: any)
-      console.error('Erro na API de login:', error);
-      if (error.response) {
-        const dataErro = error.response.data;
-        const msg = dataErro?.mensagem || JSON.stringify(dataErro);
-        Alert.alert('Erro', msg);
-      } else {
-        Alert.alert('Erro', 'Não foi possível conectar ao servidor.');
-      }
+    
+      await AsyncStorage.setItem('usuarioLogado', 'true');
+      router.replace('/'); 
+    } else {
+      Alert.alert('Erro', data.mensagem || 'Credenciais inválidas.');
     }
-  };
+  } catch (error: any) {
+    console.error('Erro na API de login:', error);
+    if (error.response) {
+      const msg = error.response.data?.mensagem || JSON.stringify(error.response.data);
+      Alert.alert('Erro', msg);
+    } else {
+      Alert.alert('Erro', 'Não foi possível conectar ao servidor.');
+    }
+  }
+};
+
 
   return (
     <ImageBackground

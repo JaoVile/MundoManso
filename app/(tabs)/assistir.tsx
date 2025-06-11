@@ -1,52 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { useLocalSearchParams, router } from 'expo-router';
-import { StyleSheet, View, Text, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Video, ResizeMode } from 'expo-av';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import api from '../api/api'; 
+
+const LOCAL_VIDEO_PATH = require('../../assets/videos/O Ursinho Pooh (2011) 720p - 210GJI.mp4'); 
+
 
 export default function Assistir() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+
+  const [videoUrl, setVideoUrl] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   useEffect(() => {
-    // Função para buscar metadados do filme
-    const fetchFilme = async () => {
-      if (!id) {
-        setErrorMsg('ID inválido');
-        setLoading(false);
-        return;
+    
+    try {
+      if (LOCAL_VIDEO_PATH) {
+        setVideoUrl(LOCAL_VIDEO_PATH);
+        
+      } else {
+        setErrorMsg('Caminho do vídeo local não encontrado. Verifique se o arquivo existe.');
       }
-      try {
-        // Se precisar enviar token:
-        const token = await AsyncStorage.getItem('token');
-        const headers = token ? { Authorization: `Bearer ${token}` } : {};
-        // Chama GET /filmes/{id}
-        const response = await api.get(`/filmes/${id}`, { headers });
-        const data = response.data;
-        // Espera que data.videoUrl exista:
-        if (data && data.videoUrl) {
-          setVideoUrl(data.videoUrl);
-        } else {
-          setErrorMsg(`URL de vídeo não disponível para o filme ${id}`);
-        }
-      } catch (error: any) {
-        console.error('Erro ao buscar metadados do filme:', error);
-        if (error.response) {
-          const dataErro = error.response.data;
-          const msg = dataErro?.mensagem || JSON.stringify(dataErro);
-          setErrorMsg(msg);
-        } else {
-          setErrorMsg('Não foi possível conectar ao servidor.');
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchFilme();
-  }, [id]);
+    } catch (e) {
+      console.error('Erro ao carregar vídeo local:', e);
+      setErrorMsg('Erro ao carregar vídeo local. Verifique o caminho e o nome do arquivo.');
+    } finally {
+      setLoading(false);
+    }
+  }, [id]); 
 
   if (loading) {
     return (
@@ -70,7 +52,7 @@ export default function Assistir() {
   if (!videoUrl) {
     return (
       <View style={styles.container}>
-        <Text style={styles.textError}>Vídeo não disponível para o id: {id}</Text>
+        <Text style={styles.textError}>Vídeo não carregado. Verifique o console para erros.</Text>
         <TouchableOpacity onPress={() => router.push('/casa')}>
           <Text style={styles.link}>VOLTAR</Text>
         </TouchableOpacity>
@@ -81,12 +63,12 @@ export default function Assistir() {
   return (
     <View style={styles.container}>
       <Video
-        source={{ uri: videoUrl }}
+        source={videoUrl} 
         useNativeControls
         resizeMode={ResizeMode.CONTAIN}
         shouldPlay
         style={styles.video}
-        // Você pode ajustar props: isLooping, onError, onPlaybackStatusUpdate, etc.
+        onError={(e) => console.error('Erro de reprodução do vídeo:', e)}
       />
     </View>
   );

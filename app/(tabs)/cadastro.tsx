@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Image, ImageBackground, Text, TouchableOpacity, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
-import api from '../api/api'; // ajuste caminho
-import axios from 'axios';    // se for usar isAxiosError
-
+import api from '../api/api';
+import axios from 'axios';  
 
 export default function CadastroScreen() {
   const router = useRouter();
@@ -12,29 +11,42 @@ export default function CadastroScreen() {
   const [senha, setSenha] = useState('');
 
   const cadastrar = async () => {
+    // Validação de campos obrigatórios
     if (!nome || !email || !senha) {
-      Alert.alert('Erro', 'Preencha todos os campos!');
+      Alert.alert('Erro', 'Preencha Nome, E-mail e Senha para continuar!');
       return;
     }
     try {
-      const response = await api.post('/usuarios', { nome, email, senha });
-      const data = response.data;
-      if (data.sucesso) {
-        Alert.alert('Parabéns!', data.mensagem || 'Conta criada com sucesso!', [
-          { text: 'Ok', onPress: () => router.replace('/login') },
-        ]);
+     
+      const response = await api.post('/usuarios', {
+        nome,
+        email,
+        senha,
+      });
+      const usuarioCriado = response.data; 
+
+       Alert.alert('Parabéns!', `Usuário '${usuarioCriado.nome}' criado com sucesso!`, [
+        { text: 'Ok', onPress: () => router.replace('/') },]);
+      
+
+    } catch (error) {
+      console.error('Erro na API de cadastro:', error); 
+      if (axios.isAxiosError(error) && error.response) { 
+        const dataErro = error.response.data; 
+        let msgErro = 'Ocorreu um erro desconhecido.';
+
+        if (typeof dataErro === 'string') {
+          msgErro = dataErro;
+        } else if (dataErro && dataErro.message) {
+          msgErro = dataErro.message;
+        } else if (dataErro) {
+          msgErro = JSON.stringify(dataErro); 
+        }
+
+        Alert.alert('Erro no Cadastro', msgErro);
+
       } else {
-        Alert.alert('Erro', data.mensagem || 'Falha ao cadastrar.');
-      }
-    } catch (error: any) {
-      // Opção A:
-      console.error('Erro na API de cadastro:', error);
-      if (error.response) {
-        const dataErro = error.response.data;
-        const msg = dataErro?.mensagem || JSON.stringify(dataErro);
-        Alert.alert('Erro', msg);
-      } else {
-        Alert.alert('Erro', 'Não foi possível conectar ao servidor.');
+        Alert.alert('Erro', 'Não foi possível conectar ao servidor. Verifique sua conexão e se o backend está rodando.');
       }
     }
   };
@@ -104,6 +116,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#ffffffdd',
     textDecorationLine: 'underline',
-    fontSize: 16,
-  },
+    fontSize: 16,
+  },
 });
