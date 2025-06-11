@@ -1,42 +1,92 @@
+import React, { useState, useEffect } from 'react';
 import { useLocalSearchParams, router } from 'expo-router';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { Video, ResizeMode } from 'expo-av';
-
-const videos: Record<string, any> = {
-  /*'1': require('../../assets/videos/parte 5.mp4'),
-  '2': require('../../assets/videos/191159-889246512_medium.mp4'),*/
-};
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import api from '../api/api'; 
 
 export default function Assistir() {
-  const { id } = useLocalSearchParams();
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  console.log('ID recebido na tela Assistir:', id);
+  useEffect(() => {
+    // Função para buscar metadados do filme
+    const fetchFilme = async () => {
+      if (!id) {
+        setErrorMsg('ID inválido');
+        setLoading(false);
+        return;
+      }
+      try {
+        // Se precisar enviar token:
+        const token = await AsyncStorage.getItem('token');
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        // Chama GET /filmes/{id}
+        const response = await api.get(`/filmes/${id}`, { headers });
+        const data = response.data;
+        // Espera que data.videoUrl exista:
+        if (data && data.videoUrl) {
+          setVideoUrl(data.videoUrl);
+        } else {
+          setErrorMsg(`URL de vídeo não disponível para o filme ${id}`);
+        }
+      } catch (error: any) {
+        console.error('Erro ao buscar metadados do filme:', error);
+        if (error.response) {
+          const dataErro = error.response.data;
+          const msg = dataErro?.mensagem || JSON.stringify(dataErro);
+          setErrorMsg(msg);
+        } else {
+          setErrorMsg('Não foi possível conectar ao servidor.');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchFilme();
+  }, [id]);
 
-
-
-  const videoSource = videos[id as string];
-
-  if (!videoSource) {
+  if (loading) {
     return (
       <View style={styles.container}>
-        <Text style={{ fontSize: 20, color: '#fff', textAlign: 'center' }}>
-          Vídeo não encontrado para o id: {id}
-        </Text>
-        <TouchableOpacity onPress={() => router.push('/casa')}>
-                   <Text style={styles.link}>VOLTAR</Text>
-                  </TouchableOpacity>
+        <ActivityIndicator size="large" color="#fff" />
       </View>
     );
   }
+
+  if (errorMsg) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.textError}>{errorMsg}</Text>
+        <TouchableOpacity onPress={() => router.push('/casa')}>
+          <Text style={styles.link}>VOLTAR</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  if (!videoUrl) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.textError}>Vídeo não disponível para o id: {id}</Text>
+        <TouchableOpacity onPress={() => router.push('/casa')}>
+          <Text style={styles.link}>VOLTAR</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <Video
-        source={videoSource}
+        source={{ uri: videoUrl }}
         useNativeControls
         resizeMode={ResizeMode.CONTAIN}
-        shouldPlay={true}
+        shouldPlay
         style={styles.video}
+        // Você pode ajustar props: isLooping, onError, onPlaybackStatusUpdate, etc.
       />
     </View>
   );
@@ -47,10 +97,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000',
     justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
   },
   video: {
     width: '100%',
     height: 300,
+    backgroundColor: '#000',
   },
   link: {
     marginTop: 20,
@@ -58,5 +111,11 @@ const styles = StyleSheet.create({
     color: '#fff',
     textDecorationLine: 'underline',
     fontSize: 20,
+  },
+  textError: {
+    fontSize: 18,
+    color: '#fff',
+    textAlign: 'center',
+    marginHorizontal: 16,
   },
 });
