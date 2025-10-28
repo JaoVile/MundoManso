@@ -1,200 +1,124 @@
-# 🌈 Mundo Manso
+🌈✨ Mundo Manso
+Um aplicativo infantil pensado no bem‑estar das crianças
+Entretenimento saudável, sem vícios, com conteúdo clássico e tranquilo
 
-  
-  ### Um aplicativo infantil pensado no bem-estar das crianças
-  
-  *Entretenimento saudável, sem vícios, com conteúdo clássico e tranquilo*
+License: MIT
 
-  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-  
+👉 Agradecimento especial: ao designer Lucas Hiago, responsável pelas telas do app. Em parceria, conseguimos entregar o projeto com nota máxima, atendendo às exigências dos professores e à ementa do curso de ADS da UNINASSAU. Obrigado, Lucas! 👏
 
----
+📸 Screenshots
+<p align="center"> <img src="docs/images/login.png" alt="Tela de Login" width="280" /> <img src="docs/images/cadastro.png" alt="Tela de Cadastro" width="280" /> </p> <p align="center"> <img src="docs/images/Home.png" alt="Tela de Conteúdo" width="280" /> <img src="docs/images/player.png" alt="Tela de Player/Vídeo" width="280" /> </p>
+📖 Sobre o Projeto
+Mundo Manso é um aplicativo mobile desenvolvido especialmente para crianças, focado em proporcionar uma experiência digital saudável e tranquila. Em um mundo onde apps infantis costumam maximizar tempo de tela, o Mundo Manso vai na contramão. 🌿
 
-## 📖 Sobre o Projeto
+🎯 Nossa Filosofia
+🧠 Sem vícios digitais: conteúdo para entreter sem criar dependência
+👀 Proteção visual: paleta de cores suaves que não cansam a visão
+📼 Conteúdo clássico: desenhos atemporais com valores positivos
+🛟 Tranquilidade garantida: ambiente seguro para as crianças
+🧩 Design calmo: interface infantil, clara e não hiperstimulante
+🌟 Conceito
+👧 Crianças se entretêm de forma saudável
+👨‍👩‍👧 Pais têm paz de espírito durante o tempo de tela
+📚 O conteúdo contribui para o desenvolvimento, não só para atenção
+✨ Funcionalidades Atuais
+📺 Biblioteca de desenhos clássicos e educativos
+🎨 Interface com cores suaves
+👶 Navegação intuitiva para crianças
+🔒 Ambiente seguro e controlado
+🚫 Sem elementos viciantes ou alertas constantes
+🚀 Roadmap — Próximas Funcionalidades
+Fase 2 — 🛒 E‑commerce Integrado
+📚 Livros de atividades
+🧸 Brinquedos temáticos
+🎨 Material escolar
+👕 Vestuário infantil
+🛁 Cosméticos infantis
+🎁 Kits personalizados
+Fase 3 — 🧩 Recursos Adicionais
+🧑‍🚀 Controle parental avançado
+👧 Perfis por criança
+✈️ Modo offline
+🧠 Conteúdo educativo interativo
+🛠️ Tecnologias Utilizadas
+text
 
-**Mundo Manso** é um aplicativo mobile desenvolvido especialmente para crianças, focado em proporcionar uma experiência digital saudável e tranquila. Em um mundo onde aplicativos infantis são projetados para maximizar o tempo de tela e criar dependência, o Mundo Manso vai na contramão:
-
-### 🎯 Nossa Filosofia
-
-- **Sem vícios digitais**: Conteúdo pensado para entreter sem criar dependência
-- **Proteção visual**: Paleta de cores suaves que não prejudicam a visão infantil
-- **Conteúdo clássico**: Desenhos antigos e atemporais com valores positivos
-- **Tranquilidade garantida**: Os pais podem deixar seus filhos assistindo com total segurança
-- **Design calmo**: Interface infantil mas não hiperstimulante
-
-### 🌟 Conceito
-
-O aplicativo nasceu da necessidade de criar um espaço digital seguro onde:
-- Crianças possam se entreter de forma saudável
-- Pais tenham paz de espírito ao permitir tempo de tela
-- O conteúdo contribua para o desenvolvimento infantil ao invés de apenas capturar atenção
-
----
-
-## ✨ Funcionalidades Atuais
-
-- 📺 Biblioteca de desenhos clássicos e educativos
-- 🎨 Interface com cores suaves e seguras para os olhos
-- 👶 Design intuitivo para navegação infantil
-- 🔒 Ambiente seguro e controlado
-- ⏰ Sem elementos viciantes ou alertas constantes
-
----
-
-## 🚀 Roadmap - Próximas Funcionalidades
-
-### Fase 2 - E-commerce Integrado
-Expansão para uma plataforma completa de produtos relacionados ao conteúdo:
-
-- 📚 **Livros de atividades** (ex: livro de pintar do Ursinho Pooh)
-- 🧸 **Brinquedos** dos personagens favoritos
-- 🎨 **Material escolar temático**
-- 👕 **Vestuário infantil** com personagens do app
-- 🛁 **Cosméticos infantis** (sabonetes, shampoos temáticos)
-- 🎁 **Kits personalizados** de produtos
-
-### Fase 3 - Recursos Adicionais
-- Sistema de controle parental avançado
-- Perfis personalizados por criança
-- Modo offline para viagens
-- Conteúdo educativo interativo
-
----
-
-## 🛠️ Tecnologias Utilizadas
-
-```
 - React Native
 - Expo
 - TypeScript
 - Styled Components
 - Context API / Redux
 - React Navigation
-```
+📋 Pré‑requisitos
+✅ Node.js (v16+)
+✅ Git
+✅ Expo CLI
+✅ Emulador Android/iOS ou app Expo Go
+Ambiente de desenvolvimento
 
----
+🔙 Back-end: Spring Boot na porta 8081
+📱 Emulador Android acessa a API do PC por http://10.0.2.2:8081
+🔁 Metro/Expo em porta diferente (ex.: 8082)
+🔧 Instalação
+Clone o repositório
+Bash
 
-## 📋 Pré-requisitos
-
-Antes de começar, você precisará ter instalado em sua máquina:
-
-- [Node.js](https://nodejs.org/en/) (versão 16 ou superior)
-- [Git](https://git-scm.com)
-- [Expo CLI](https://docs.expo.dev/get-started/installation/)
-- Um emulador Android/iOS ou o app Expo Go no seu smartphone
-
----
-
-## 🔧 Instalação
-
-### 1. Clone o repositório
-```bash
 git clone https://github.com/JaoVile/MundoManso.git
-```
-
-### 2. Entre na pasta do projeto
-```bash
 cd MundoManso
-```
+Instale as dependências
+Bash
 
-### 3. Instale as dependências
-```bash
 npm install
 # ou
 yarn install
-```
+Inicie o projeto (evitando conflito com 8081)
+Bash
 
-### 4. Inicie o projeto
-```bash
-npm start
-# ou
-yarn start
-# ou
-expo start
-```
-
-### 5. Execute no dispositivo
-
-**No Emulador:**
-- Pressione `a` para abrir no Android
-- Pressione `i` para abrir no iOS (apenas macOS)
-
-**No Dispositivo Físico:**
-- Instale o app [Expo Go](https://expo.dev/client)
-- Escaneie o QR Code que aparece no terminal
-
----
-
-## 📱 Como Usar
-
-1. Abra o aplicativo
-2. Navegue pela biblioteca de conteúdos
-3. Selecione um desenho/atividade
-4. Aproveite um momento tranquilo com seu filho! 🌈
-
----
-
-## 🎨 Paleta de Cores
-
+npx expo start --port 8082
+# atalhos: 'a' para Android, 'i' para iOS (macOS)
+Dispositivo físico
+Instale o app Expo Go
+Escaneie o QR Code do terminal
+📱 Como Usar
+Abra o aplicativo
+Navegue pela biblioteca de conteúdos
+Selecione um desenho/atividade
+Aproveite um momento tranquilo com seu filho! 🌈
+🎨 Paleta de Cores
 Nossa paleta foi cuidadosamente selecionada pensando na saúde visual infantil:
 
-```css
+CSS
+
 Cores Principais:
 - Verde Suave: #A8D5BA
 - Azul Céu: #B8D4E8
 - Amarelo Pastel: #F9E5A8
 - Rosa Claro: #F5CAC3
 - Lavanda: #D4C5E8
-```
+🤝 Como Contribuir
+Faça um Fork do projeto
+Crie uma branch: git checkout -b feature/AmazingFeature
+Commit: git commit -m 'Add some AmazingFeature'
+Push: git push origin feature/AmazingFeature
+Abra um Pull Request
+👥 Autores
+🎨 Lucas Hiago — UI/UX Design
+💻 João Marcos (João Vile) — Desenvolvimento
+GitHub: @JaoVile
+📄 Licença
+Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
 
----
+🙏 Agradecimentos
+👏 Designer: Lucas Hiago — pelas telas e parceria que nos permitiu concluir o projeto com nota máxima, atendendo às exigências dos professores e da ementa do curso de ADS da UNINASSAU.
+👪 A todos os pais que se preocupam com o consumo digital saudável das crianças
+🌐 Comunidade open source
+💚 A todas as pessoas que contribuírem com este projeto
+⚠️ Aviso legal sobre imagens
+As imagens deste repositório e do README são próprias, de domínio público (CC0) ou possuem licença compatível para redistribuição.
+Este projeto não é afiliado, endossado ou patrocinado por quaisquer detentores de marcas ou personagens.
+Encontrou algo com licença incompatível? Abra uma issue que substituímos imediatamente.
+💚 Feito com amor e responsabilidade para as crianças
+“Tecnologia pode ser gentil com a infância”
 
-## 🤝 Como Contribuir
-
-Contribuições são sempre bem-vindas!
-
-1. Faça um Fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
-
----
-
-## 👨‍💻 Autor
-
-**João Vile**
-
-- GitHub: [@JaoVile](https://github.com/JaoVile)
-
----
-
-## 📄 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
----
-
-## 🙏 Agradecimentos
-
-- A todos os pais que se preocupam com o consumo digital saudável de seus filhos
-- À comunidade open source
-- A todos que contribuírem com este projeto
-
----
-
-  
-  ### 💚 Feito com amor e responsabilidade para as crianças
-  
-  *"Tecnologia pode ser gentil com a infância"*
-
-
----
-
-## 📞 Suporte
-
-Se você tiver alguma dúvida ou sugestão, sinta-se à vontade para abrir uma [issue](https://github.com/JaoVile/MundoManso/issues) ou entrar em contato.
-
----
-
-**⭐ Se este projeto te ajudou, considere dar uma estrela!**
+📞 Suporte
+Em caso de dúvidas ou sugestões, abra uma issue.

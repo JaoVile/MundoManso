@@ -13,7 +13,8 @@ const filmes = [
     id: '2',
     titulo: 'O Pequeno Urso',
     sinopse: 'O Pequeno Urso vive em uma cabana com seus pais, o Papai-Urso e a Mamãe-Urso, e passa seus dias explorando a floresta com seus amigos.',
-    imagemCartaz: require('../../assets/images/Filme_irmão_Urso.png'),
+    imagemCartaz: require(
+      '../../assets/images/Filme_irmão_Urso.png'),
   },
 ];
 

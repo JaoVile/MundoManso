@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useLocalSearchParams, router } from 'expo-router';
-import { StyleSheet, View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { Video, ResizeMode } from 'expo-av';
+import { ResizeMode, Video } from 'expo-av';
+import { router, useLocalSearchParams } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-const LOCAL_VIDEO_PATH = require('../../assets/videos/O Ursinho Pooh (2011) 720p - 210GJI.mp4'); 
-
+// ⚠️ CORRIGIDO: Faltava uma barra '/' entre '..' e 'assets'
+const LOCAL_VIDEO_PATH = require('../../assets/videos/12567100_2160_3840_24fps.mp4');
 
 export default function Assistir() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -14,11 +14,9 @@ export default function Assistir() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   useEffect(() => {
-    
     try {
       if (LOCAL_VIDEO_PATH) {
         setVideoUrl(LOCAL_VIDEO_PATH);
-        
       } else {
         setErrorMsg('Caminho do vídeo local não encontrado. Verifique se o arquivo existe.');
       }
