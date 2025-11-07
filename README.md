@@ -32,7 +32,7 @@ Ao designer **Lucas Hiago**, responsável pelas telas do app. Em parceria, conse
 
 ## 📖 Sobre o Projeto
 
-**Mundo Manso** é um aplicativo mobile desenvolvido especialmente para crianças, focado em proporcionar uma experiência digital **saudável e tranquila**. Em um mundo onde apps infantis costumam maximizar tempo de tela, o Mundo Manso vai na contramão. 🌿
+**Mundo Manso** é um aplicativo mobile desenvolvido especialmente para as crianças, focado em proporcionar uma experiência digital **saudável e tranquila**. Em um mundo onde apps infantis costumam maximizar tempo de tela, o Mundo Manso vai na contramão. 🌿
 
 ---
 
