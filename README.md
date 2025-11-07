@@ -19,13 +19,13 @@ Ao designer **Lucas Hiago**, responsável pelas telas do app. Em parceria, conse
 ## 📸 Screenshots
 
 <p align="center">
-  <img src="docs/images/Login.png" alt="Tela de Login" width="280" />
-  <img src="docs/images/Cadastro.png" alt="Tela de Cadastro" width="280" />
+  <img src="docs/images/login.png" alt="Tela de Login" width="280" />
+  <img src="docs/images/cadastro.png" alt="Tela de Cadastro" width="280" />
 </p>
 
 <p align="center">
-  <img src="docs/images/Home.png" alt="Tela de Conteúdo" width="280" />
-  <img src="docs/images/Player.png" alt="Tela de Player/Vídeo" width="280" />
+  <img src="docs/images/home.png" alt="Tela de Conteúdo" width="280" />
+  <img src="docs/images/player.png" alt="Tela de Player/Vídeo" width="280" />
 </p>
 
 ---
