@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   View,
   ImageBackground,
@@ -8,9 +7,20 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Link } from 'expo-router';
+import { useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function HomeScreen() {
   const router = useRouter();
+
+  // joão aqui é onde olha se esta logado, se não vai para a tela login
+  useEffect(() => {
+    const verificarLogin = async () => {
+      const logado = await AsyncStorage.getItem('usuarioLogado');
+      if (!logado) router.replace('/login');
+    };
+    verificarLogin();
+  }, []);
 
   return (
     <ImageBackground
@@ -19,7 +29,7 @@ export default function HomeScreen() {
       resizeMode="cover"
     >
 
-      <Link href="/login" asChild>
+      <Link href="/perfil" asChild>
         <TouchableOpacity style={[styles.button, styles.btnLogin]}>
           <Image
             source={require('../assets/images/icone_login.png')}
@@ -40,7 +50,6 @@ export default function HomeScreen() {
         />
       </TouchableOpacity>
 
-      {/* parte do botão Casa/filme */}
       <TouchableOpacity
         style={[styles.button, styles.btnCasa]}
         onPress={() => router.push('/casa')}
@@ -52,7 +61,7 @@ export default function HomeScreen() {
         />
       </TouchableOpacity>
 
-      {/* parte do botão brincadeiras/jogos */}
+
       <TouchableOpacity
         style={[styles.button, styles.btnBrinca]}
         onPress={() => router.push('/brincadeiras')}
@@ -64,7 +73,6 @@ export default function HomeScreen() {
         />
       </TouchableOpacity>
 
-      {/* parte dos livros botão Contos/livros */}
       <TouchableOpacity
         style={[styles.button, styles.btnContos]}
         onPress={() => router.push('/contos')}
@@ -123,16 +131,17 @@ const styles = StyleSheet.create({
 
   // tamanhos dos botãoes
   icon: {
-    width: '140%',
-    height: '140%',
+    width: '195%',
+    height: '195%',
   },
-  // login
+  // login(isso deu trabalho não meche )
   btnLogin: {
   top: '10%',
   right: '30%',
   width: 400,
   height: 40,
 },
+// login(isso deu trabalho não meche )
 iconLogin: {
     top: '81%',
     right: '-44.9%',
@@ -141,7 +150,4 @@ iconLogin: {
 },
 buttonicon: {
   position:'relative',
-}
-
-
-});
+}});

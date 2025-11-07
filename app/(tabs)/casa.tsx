@@ -1,157 +1,130 @@
-import React, { useRef, useState } from 'react';
+import { useRouter } from 'expo-router';
 import {
-  View,
-  Text,
-  ImageBackground,
-  Animated,
   FlatList,
-  TouchableOpacity,
   Image,
+  ImageBackground,
   StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
   Dimensions,
 } from 'react-native';
-import { useRouter } from 'expo-router';
 
-
-const { width } = Dimensions.get('window');
 
 const filmes = [
-   {
+  {
     id: '1',
-    titulo: 'O Reino Encantado',
-    imagem: require('../../assets/videos/reino.png'),
+    titulo: 'A Floresta Sonhadora',
+    sinopse: 'Uma aventura mágica em uma floresta encantada onde criaturas mansas vivem em paz.',
+    imagemCartaz: require('../../assets/images/Filme_O_Ursinho_Pooh.png'),
   },
-
   {
     id: '2',
-    titulo: 'O PEQUENO URSO',
-    imagem: require('../../assets/videos/O_PEQUENO_URSO.png'),
-  },
- 
-  {
-    id: '3',
-    titulo: 'Brincando na Floresta',
-    imagem: require('../../assets/videos/floresta.png'),
+    titulo: 'O Pequeno Urso',
+    sinopse: 'O Pequeno Urso vive em uma cabana com seus pais, o Papai-Urso e a Mamãe-Urso, e passa seus dias explorando a floresta com seus amigos.',
+    imagemCartaz: require('../../assets/images/Filme_irmão_Urso.png'),
   },
 ];
 
-export default function CasaScreen() {
-  const scrollX = useRef(new Animated.Value(0)).current;
-  const flatListRef = useRef<FlatList>(null);
-  const [indexAtual, setIndexAtual] = useState(0);
+const { width } = Dimensions.get('window');
+
+export default function Filme() {
   const router = useRouter();
 
-  const irParaProximo = () => {
-    if (indexAtual < filmes.length - 1) {
-      flatListRef.current?.scrollToIndex({ index: indexAtual + 1, animated: true });
-      setIndexAtual(indexAtual + 1);
-    }
-  };
+  const renderItem = ({ item }: { item: typeof filmes[0] }) => (
+    <View style={styles.container}>
+      <Image source={item.imagemCartaz} style={styles.cartaz} />
+      <Text style={styles.sinopseTitulo}>Sinopse:</Text>
+      <Text style={styles.sinopse}>{item.sinopse}</Text>
 
-  const irParaAnterior = () => {
-    if (indexAtual > 0) {
-      flatListRef.current?.scrollToIndex({ index: indexAtual - 1, animated: true });
-      setIndexAtual(indexAtual - 1);
-    }
-  };
+      <TouchableOpacity
+      onPress={() => {
+        console.log('ID do botão:', item.id);
+        router.replace(`/assistir?id=${item.id}`);
+      }}>
+      <Image
+        source={require('../../assets/images/Botão_Assistir.png')}
+        style={styles.botao_AS}
+        />
+        </TouchableOpacity>
+
+
+      <TouchableOpacity onPress={() => router.push('/')}>
+        <Image source={require('../../assets/images/Botão_Home.png')} style={styles.botaoHome} />
+      </TouchableOpacity>
+    </View>
+  );
 
   return (
     <ImageBackground
-      source={require('../../assets/images/fundo_filmes.jpg')}
+      source={require('../../assets/images/Parte_de_tras_Filmes.png')}
       style={styles.background}
       resizeMode="cover"
     >
-
-      <Animated.FlatList
-        ref={flatListRef}
+      <FlatList
         data={filmes}
+        keyExtractor={(item) => item.id}
+        renderItem={renderItem}
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        keyExtractor={(item) => item.id}
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-          { useNativeDriver: true }
-        )}
-        onMomentumScrollEnd={(event) => {
-          const novoIndex = Math.round(event.nativeEvent.contentOffset.x / width);
-          setIndexAtual(novoIndex);
-        }}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.card}
-            onPress={() => router.push('/detalhe')}
-          >
-            <Image source={item.imagem} style={styles.imagem} />
-            <Text style={styles.nome}>{item.titulo}</Text>
-          </TouchableOpacity>
-        )}
+        snapToAlignment="center"
+        decelerationRate="fast"
+        getItemLayout={(_, index) => ({
+          length: width,
+          offset: width * index,
+          index,
+        })}
       />
-
-      <View style={styles.botoes}>
-        <TouchableOpacity onPress={irParaAnterior} style={styles.botaoNavegar}>
-          <Text style={styles.textoBotao}>{'◀'}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={irParaProximo} style={styles.botaoNavegar}>
-          <Text style={styles.textoBotao}>{'▶'}</Text>
-        </TouchableOpacity>
-      </View>
-
-      <TouchableOpacity
-        onPress={() => router.push('/')}
-        style={styles.botaoVoltar}
-      >
-        <Text style={styles.textoVoltar}>Voltar para Home</Text>
-      </TouchableOpacity>
     </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  background: { flex: 1, paddingTop: 90 },
-  card: {
-    width,
+  background: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+  container: {
+    width: width,
+    padding: 20,
     alignItems: 'center',
-    padding: 30,
+    justifyContent: 'center',
   },
-  imagem: {
-    width: width * 0.5,
-    height: width * 0.7,
+  cartaz: {
+    width: 340,
+    height: 400,
     borderRadius: 20,
-    marginBottom: 10,
+    marginTop: 20,
   },
-  nome: {
-    fontSize: 30,
+  sinopseTitulo: {
+    width: 200,
+    height: 21,
+    fontFamily: 'Courier New',
+    fontSize: 15,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#000',
+    marginTop: 3,
   },
-  botoes: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginHorizontal: 90,
-    marginTop: 10,
+  sinopse: {
+    width: 300,
+    height: 80,
+    fontFamily: 'VT323',
+    fontSize: 14,
+    color: '#000',
+    marginVertical: 10,
+    textAlign: 'justify',
   },
-  botaoNavegar: {
-    backgroundColor: '#fff',
-    padding: 15,
-    borderRadius: 50,
-    elevation: 4,
+  botao_AS: {
+    height: 80,
+    marginVertical: 10,
+    resizeMode: 'contain',
   },
-  textoBotao: {
-    fontSize: 25,
-    fontWeight: 'bold',
-  },
-  botaoVoltar: {
-    marginTop: 50,
-    alignSelf: 'center',
-    backgroundColor: '#fff',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 20,
-    elevation: 4,
-  },
-  textoVoltar: {
-    fontSize: 13,
-    color: '#333',
+  botaoHome: {
+    width: 120,
+    height: 50,
+    marginTop: 2,
+    resizeMode: 'contain',
   },
 });
