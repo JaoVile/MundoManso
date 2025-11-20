@@ -12,7 +12,10 @@
 
 ## 👉 Agradecimento Especial
 
-Ao designer **Lucas Hiago**, responsável pelas telas do app. Em parceria, conseguimos entregar o projeto com **nota máxima**, atendendo às exigências dos professores e à ementa do curso de **ADS da UNINASSAU**. Obrigado, Lucas! 👏
+Ao designer  **Lucas Hiago**, responsável pelas telas do app. Em parceria, conseguimos entregar o projeto com **nota máxima**, atendendo às exigências dos professores e à ementa do curso de **ADS da UNINASSAU**. Obrigado, Lucas! 👏
+<br>
+Linkedin:(https://www.linkedin.com/in/lucasbarbosadev42/)
+Github:(https://github.com/Lucashiag0)
 
 ---
 
